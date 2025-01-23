@@ -13,6 +13,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js';
 import BuySell from '../../components/BuySell/BuySell';
 import { useEffect } from 'react';
+import Video from '../../components/Video/Video';
 const CardPage = () => {
   const { token } = useParams();
 
@@ -106,6 +107,7 @@ const CardPage = () => {
   const baseReserve = Number(data.virtualBaseReserve) / (10 ** 18);
   const quoteReserve = Number(data.virtualQuoteReserve) / (10 ** 18);
   const maxSupply = Number(data.maxListingBaseAmount) / (10 ** 18);
+ 
 
   const prices = [];
   const supplies = [];
@@ -178,11 +180,11 @@ const CardPage = () => {
        {/* leftbox */}
       <div className='col-md-3'>
           <div className='boxc'>
-             <span class="socialicon">
-            <a href='#'><i class="fa fa-globe"></i></a>
-            <a href='#'><i class="fa fa-twitter"></i></a>
-            <a href='#'><i class="fa fa-telegram"></i></a>
-            <a href='#'><i class="fa fa-github"></i></a>
+             <span className="socialicon">
+            <a href='#'><i className="fa fa-globe"></i></a>
+            <a href='#'><i className="fa fa-twitter"></i></a>
+            <a href='#'><i className="fa fa-telegram"></i></a>
+            <a href='#'><i className="fa fa-github"></i></a>
             </span>
             
           <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet.</p>
@@ -230,15 +232,13 @@ const CardPage = () => {
           <img className="h-50 rounded" src={poolDetailsParsed?.image} alt="Token image" />
           </div>
           <div className='col-md-9 lgs'>
-            <h1 className='tokenname'>Bullforce Token</h1>
+            <h1 className='tokenname'>{poolDetailsParsed.name}</h1>
             </div>
         </div>
             
         </div>
 
-        <div className='boxc'>
-        <iframe width="100%" height="400" src="https://www.youtube.com/embed/acag6jqNCAg" title="🔸PipiLol - A Simple Dive into the Hidden Gem on #Core🔸" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+        <Video link={poolDetailsParsed.video}/>
 
         <div className='boxc AllTransactions'>
         <TradeEventList contractAddress={token} tx={txDone} />
@@ -251,8 +251,8 @@ const CardPage = () => {
 
          
           <p>Bonding Curve Progress (0.32%)</p>
-          <div class="progress">
-          <div class="progress-bar" role="progressbar" style={{ width: '25%' }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+          <div className="progress">
+          <div className="progress-bar" role="progressbar" style={{ width: '25%' }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
           </div>
           <p>When the market cap hits $79.4K, All liquidity from the bonding curve will be deposited into Raydium AMM V4 and burned. The progression accelerates as the price rises</p>
 

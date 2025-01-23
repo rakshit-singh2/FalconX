@@ -7,9 +7,10 @@ import abi from "../../helper/ManagerFaucetAbi.json";
 import { daimond } from '../../helper/Helper';
 
 
-const NonListed = ( {activeTable } ) => {
+const NonListed = ({ activeTable }) => {
   const [error, setError] = useState(null); // Error state
   const [totalTokens, setTotalTokens] = useState(null); // Total tokens count state
+  console.log({ totalTokens })
   const navigate = useNavigate(); // React Router hook for navigation
 
   useEffect(() => {
@@ -38,14 +39,13 @@ const NonListed = ( {activeTable } ) => {
 
   return (
     <div>
-
-      
       <div className="cardbox grid grid-cols-1 mb-5 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-8">
         {
-          Array.from({ length: totalTokens }, (_, index) => (
-            <Card key={index} id={index}/>
-          ))
-        } 
+          Array.from({ length: totalTokens || 0 }, (_, index) => {
+            console.log(`Creating Card for ID: ${index}`);
+            return <Card key={index} id={index+1} />;
+          })
+        }
       </div>
 
     </div>

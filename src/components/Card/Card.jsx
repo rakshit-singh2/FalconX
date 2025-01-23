@@ -1,66 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useReadContracts } from 'wagmi';
 import abi from "../../helper/ManagerFaucetAbi.json";
 import { daimond } from '../../helper/Helper';
 import { useNavigate } from 'react-router-dom';
 
 const Card = ({ id }) => {
-  const navigate = useNavigate(); // Hook to navigate to different routes
- 
 
-  // Ensure we have the ID available before making the contract call
+  const navigate = useNavigate();
+
   if (!id) {
     return null;
   }
 
-  // Use the wagmi hook to read the contract
-  const { data, error, isLoading } = useReadContract({
-    abi,
-    address: daimond,
-    functionName: 'getPoolAt',
-    args: [id.toString()], // Passing `id` as argument to the contract function
-    chainId: 97
+  const { data, error, isLoading } = useReadContracts({
+    contracts: [{
+      abi,
+      address: daimond,
+      functionName: 'getPoolAt',
+      args: [(id-1).toString()],
+      chainId: 97
+    }, {
+      abi,
+      address: daimond,
+      functionName: 'getPoolConfig',
+      args: [20],
+      chainId: 97
+    }]
   });
 
-  // Guard clause: Return early if loading or error
   if (isLoading) {
-    return <div>Loading...</div>;
+    return;
   }
+
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return;
   }
 
-  // Ensure data is available before destructuring
   if (!data) {
-    return <div>No data available</div>;
+    return;
   }
+  
 
-  // Destructuring the fetched data from the contract
-  const { id: poolId,poolDetails,virtualQuoteReserve,virtualBaseReserve } = data;
 
-  // Parse the poolDetails JSON string
+  const { id: poolId,poolDetails,virtualQuoteReserve,virtualBaseReserve } = data[0].result;
+
   const poolDetailsParsed = poolDetails ? JSON.parse(poolDetails) : {};
   const pricePerToken = Number(virtualQuoteReserve || BigInt(0)) / Number(virtualBaseReserve || BigInt(0));  // Token price estimation
   const marketCap = pricePerToken * Number(1000000000);
 
-
-
   return (
 
-
-
     <div
-      key={data.id}
+      key={data[0].result.id}
       className="rounded-lg shadow-md overflow-hidden cursor-pointer"
-      onClick={() => navigate(`/token/bsc/${data.token}`)} // Navigate to /card-page with poolId as query param
+      onClick={() => navigate(`/token/bsc/${data[0].result.token}`)} // Navigate to /card-page with poolId as query param
     >
       {/* Card New Section */}
-
-
-      
-
-
       <div className="cards dark">
         <div className="card-body">
           <img
@@ -74,8 +70,8 @@ const Card = ({ id }) => {
 
           <span>Progress</span>
           <span className='hardcap'>Hard Cap</span>
-          <div class="progress">
-          <div class="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+          <div className="progress">
+          <div className="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
           </div>
           <span className='price'>4.913k  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" className="chainimg" alt="BNB" /></span> 
         
@@ -88,8 +84,8 @@ const Card = ({ id }) => {
         <hr />
         <p className='mcapdiv'>
             <span className="socialicon">
-            <i class="fa fa-globe"></i>
-            <i class="fa fa-twitter"></i> 
+            <i className="fa fa-globe"></i>
+            <i className="fa fa-twitter"></i> 
             </span>
           <span className="MCap">
             MCap: {marketCap ? `$${marketCap.toFixed(2)}` : 'Calculating...'}

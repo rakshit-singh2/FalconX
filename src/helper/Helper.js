@@ -1,4 +1,4 @@
-export const daimond = "0xc470214688f89B100363E280532625fabB5dca00";
+export const daimond = "0x4fDB78C09535C3848B660b1b44B3d5EF8a5dDE8b";
 
 
 const bscRouters = {
@@ -11,6 +11,7 @@ const bscRouters = {
 
 const bscTestnetRouters = {
     'Pancake Swap': '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
+    'House Swap': '0xda8e9632c013c9d6a5fbabac9e2ecdf69706a306',
 }
 
 export const routers = {

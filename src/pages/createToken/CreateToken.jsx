@@ -10,23 +10,21 @@ const CreateToken = () => {
   const { chain, address } = useAccount();
   const routerAddresses = routers[chain?.id] || [];
   const { writeContractAsync, isPending, isSuccess } = useWriteContract();
-  
+
   const [tokenName, setTokenName] = useState('');
   const [tickerSymbol, setTickerSymbol] = useState('');
   const [imageURl, setImageURl] = useState('');
+  const [videoURl, setVideoURl] = useState('');
   const [description, setDescription] = useState('');
   const [router, setRouter] = useState('Select Router');
   const [website, setWebsite] = useState('');
   const [twitter, setTwitter] = useState('');
   const [telegram, setTelegram] = useState('');
   const [selectedTag, setSelectedTag] = useState(null);
-
   const [showExtraOptions, setShowExtraOptions] = useState(false);
-
   const [initialBuyAmount, setInitialBuyAmount] = useState(0);
   const [startTime, setStartTime] = useState();
   const [maxPerUser, setMaxPerUser] = useState(0);
-  const [hash, setHash] = useState(null);
 
   // Extra Amounts based on percentages
   const [buyAmount, setBuyAmount] = useState(0);
@@ -44,10 +42,8 @@ const CreateToken = () => {
     e.preventDefault(); // Prevent form from refreshing the page
     try {
       if (!address) {
-        alert("Please Connect Wallet");
-        return;
+        alert("Please Connect Wallet")
       }
-      
       const params = {
         name: tokenName,
         symbol: tickerSymbol,
@@ -55,11 +51,12 @@ const CreateToken = () => {
           name: tokenName,
           symbol: tickerSymbol,
           image: imageURl,
+          video:videoURl,
           description: description,
           Website: website,
           Twitter: twitter,
           Telegram: telegram,
-          Tag: selectedTag,
+          Tag: selectedTag
         }),
         configIndex: 20,
         router: routerAddresses[router],
@@ -69,10 +66,10 @@ const CreateToken = () => {
         maxBuyAmount: 0,
         delayBuyTime: 0,
         merkleRoot: "0x0000000000000000000000000000000000000000000000000000000000000000",
-        initialBuyAmount: 0, // Using total supply here
+        initialBuyAmount: 0 // Using total supply here
       };
+      console.log({params})
 
-      // Call the contract and wait for the transaction
       const data = await writeContractAsync({
         abi: degenFacetAbi,
         address: daimond,
@@ -81,18 +78,8 @@ const CreateToken = () => {
         value: initialBuyAmount, // Add value if needed
         args: [params], // Passing the struct as an object
       });
-
-      // Wait for the transaction to be mined
-      await waitForTransactionReceipt({
-        hash: data.hash,
-        confirmations: 1, // Wait for at least 1 confirmation
-      });
-
-      // Once the transaction is mined, navigate to the home page
-      navigate("/");
-
     } catch (error) {
-      console.log(error);
+      console.log(error)
       const message = error.shortMessage;
       if (message) {
         if (message.includes('reason:')) {
@@ -167,11 +154,11 @@ const CreateToken = () => {
                 </label>
                 <input
                   type="url"
-                  id="imgUrl"
-                  name="imgUrl"
+                  id="videoUrl"
+                  name="videoUrl"
                   className="rounded p-4 border-2 border-purple-400 bg-purple-100 text-purple-900 font-bold"
-                  value={imageURl}
-                  onChange={(e) => setImageURl(e.target.value)}
+                  value={videoURl}
+                  onChange={(e) => setVideoURl(e.target.value)}
                   placeholder={t('Video URL')}
                   required
                 />
@@ -343,11 +330,7 @@ const CreateToken = () => {
                       placeholder="Max Buy Amount"
                     />
                   </div>
-                </>
-              )}
-
-              {/* Initial Buy Amount Input Section */}
-              <div className="w-full flex flex-col gap-4">
+                  <div className="w-full flex flex-col gap-4">
                 <label htmlFor="Initial Buy Amount" className="text-lg font-bold text-purple-900">
                   Initial Buy Amount ({chain?.nativeCurrency.symbol}) Ex:2 <span className="text-red-500">*</span>
                 </label>
@@ -362,11 +345,14 @@ const CreateToken = () => {
                   required
                 />
               </div>
+                </>
+              )}
 
               {/* Submit Button */}
               <button
                 type="submit"
                 className="createtokenbtn submit-button mt-4 w-full text-white font-bold py-3 rounded-lg"
+                disabled={isPending}
               >
                 {isPending ? 'Creating Token...' : 'Create Token'}
               </button>

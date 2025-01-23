@@ -144,7 +144,7 @@ const BuySell = ({ data, token, balanceOf }) => {
         }
     };
 
-    const poolDetailsParsed = data?.poolDetails ? JSON.parse(data.poolDetails) : {};
+    const poolDetailsParsed = data?.poolDetails && typeof(data.poolDetails) == 'JSON' ? JSON.parse(data.poolDetails) : {};
     const baseReserve = Number(data.virtualBaseReserve) / (10 ** 18);
     const quoteReserve = Number(data.virtualQuoteReserve) / (10 ** 18);
     const maxSupply = Number(data.maxListingBaseAmount) / (10 ** 18);
