@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "author": "Rakshit Kumar Singh <kumarrakshit2000@rediffmail.com> (https://www.linkedin.com/in/rakshit-kumar-singh-526a13146/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rakshit-singh2/FalconX"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
