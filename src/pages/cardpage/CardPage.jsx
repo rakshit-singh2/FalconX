@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { readContract } from 'wagmi/actions';
 import abi from "../../helper/ManagerFaucetAbi.json";
-import DegenFacetabi from "../../helper/DegenFacetAbi.json";
 import { daimond } from '../../helper/Helper';
 import TokenAbi from '../../helper/TokenAbi.json';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useReadContract, useReadContracts } from 'wagmi';
 import logo from "../../assets/logo/logo.png";
 import TradeEventList from '../../components/Statistics/TradeEventList';
 import { config } from '../../wagmiClient';
@@ -21,41 +20,24 @@ const CardPage = () => {
     return <div className="flex justify-center items-center h-screen">Card not found</div>;
   }
 
-  const { data, error, isLoading } = useReadContract({
-    abi,
-    address: daimond,
-    functionName: 'getPoolInfo',
-    args: [token],
-    chainId: 97,
+  const { data, error, isLoading } = useReadContracts({
+    contracts: [{
+      abi,
+      address: daimond,
+      functionName: 'getPoolInfo',
+      args: [token],
+    }, {
+      abi,
+      address: daimond,
+      functionName: 'getPoolConfig',
+      args: [20],
+
+    }]
   });
 
   const { chain, address } = useAccount();
 
-  const [amountOut, setAmountOut] = useState([0n, 0n, 0n, 0n, 0n]);
-  const [isBuy, setIsBuy] = useState(true);
-  const [txDone, setTxDone] = useState(0);
   const [balanceOf, setBalaceOf] = useState(0);
-
-  const startTime = data?.startTime ? Math.floor(Number(data.startTime) / 1000) : 0;
-
-  const fetchAmountOut = async (inputAmount) => {
-    try {
-      const result = await readContract(config, {
-        abi: DegenFacetabi,
-        address: daimond,
-        functionName: 'getAmountOut',
-        chainId: 97,
-        args: [
-          token,
-          BigInt(inputAmount * 10 ** 18),
-          isBuy,
-        ],
-      });
-    } catch (error) {
-      console.error('Error fetching amountOut:', error);
-      setAmountOut([0n, 0n, 0n, 0n, 0n]);
-    }
-  };
 
   const fetchBalaceOf = async () => {
     try {
@@ -71,11 +53,8 @@ const CardPage = () => {
       setBalaceOf(result)
     } catch (error) {
       console.error('Error fetching amountOut:', error);
-      setAmountOut([0n, 0n, 0n, 0n, 0n]);
     }
   };
-
-
   useEffect(() => {
     fetchBalaceOf();
   }, [address]);
@@ -103,10 +82,10 @@ const CardPage = () => {
     return <div className="flex justify-center items-center h-screen">Data not available</div>;
   }
 
-  const poolDetailsParsed = data?.poolDetails ? JSON.parse(data.poolDetails) : {};
-  const baseReserve = Number(data.virtualBaseReserve) / (10 ** 18);
-  const quoteReserve = Number(data.virtualQuoteReserve) / (10 ** 18);
-  const maxSupply = Number(data.maxListingBaseAmount) / (10 ** 18);
+  const poolDetailsParsed = data[0].result?.poolDetails ? JSON.parse(data[0].result.poolDetails) : {};
+  const baseReserve = Number(data[0].result.virtualBaseReserve) / (10 ** 18);
+  const quoteReserve = Number(data[0].result.virtualQuoteReserve) / (10 ** 18);
+  const maxSupply = Number(data[0].result.maxListingBaseAmount) / (10 ** 18);
  
 
   const prices = [];
@@ -164,9 +143,9 @@ const CardPage = () => {
   };
 
   let routerText = '';
-  if (data?.router === '0xD99D1c33F9fC3444f8101754aBC46c52416550D1') {
+  if (data[0].result?.router === '0xD99D1c33F9fC3444f8101754aBC46c52416550D1') {
     routerText = 'Pancake Swap';
-  } else if (data?.router === '0xda8e9632c013c9d6a5fbabac9e2ecdf69706a306') {
+  } else if (data[0].result?.router === '0xda8e9632c013c9d6a5fbabac9e2ecdf69706a306') {
     routerText = 'How Swap';
   }
 
@@ -206,11 +185,11 @@ const CardPage = () => {
                   rel="noopener noreferrer"
                   className="ml-3 text-gray-500 hover:underline hover:text-gold"
                 >
-                  <span>{data?.token ? `${data.token.slice(0, 10)}...${data.token.slice(-9)}` : ''}</span>
+                  <span>{data[0].result?.token ? `${data[0].result.token.slice(0, 10)}...${data[0].result.token.slice(-9)}` : ''}</span>
                 </a>
               </strong>
             </li>
-            <li><strong>Start Time :</strong><span> {data?.startTime ? new Date(Number(data.startTime) * 1000).toLocaleString() : 'N/A'}</span></li>
+            <li><strong>Start Time :</strong><span> {data[0].result?.startTime ? new Date(Number(data[0].result.startTime) * 1000).toLocaleString() : 'N/A'}</span></li>
           </ul>
         </div>
 
@@ -241,7 +220,7 @@ const CardPage = () => {
         <Video link={poolDetailsParsed.video}/>
 
         <div className='boxc AllTransactions'>
-        <TradeEventList contractAddress={token} tx={txDone} />
+        <TradeEventList contractAddress={token} />
         </div>
       </div>
 
@@ -249,14 +228,12 @@ const CardPage = () => {
       <div className='col-md-3'>
       <div className="boxc bg-white p-6 rounded-lg">
 
-         
-          <p>Bonding Curve Progress (0.32%)</p>
           <div className="progress">
-          <div className="progress-bar" role="progressbar" style={{ width: '25%' }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+          <div className="progress-bar" role="progressbar" style={{ width: `${parseInt((data[0].result.virtualQuoteReserve - data[1].result.initialVirtualQuoteReserve) / (data[0].result.maxListingQuoteAmount + data[0].result.listingFee)) ** 100}%` }} aria-valuenow={`${parseInt((data[0].result.virtualQuoteReserve - data[1].result.initialVirtualQuoteReserve) / (data[0].result.maxListingQuoteAmount + data[0].result.listingFee)) ** 100}`}aria-valuemin="0" aria-valuemax="100">{`${parseInt((data[0].result.virtualQuoteReserve - data[1].result.initialVirtualQuoteReserve) / (data[0].result.maxListingQuoteAmount + data[0].result.listingFee)) ** 100}%`}</div>
           </div>
           <p>When the market cap hits $79.4K, All liquidity from the bonding curve will be deposited into Raydium AMM V4 and burned. The progression accelerates as the price rises</p>
 
-          <BuySell data={data} token={token} balanceOf={balanceOf}/>
+          <BuySell data={data[0].result} token={token} balanceOf={balanceOf}/>
           <p className='bonding'>Needs 91.7001 SOL to fill the bonding curve</p>
         </div>
         <div className='chartbox' style={{ width: '100%'}}>

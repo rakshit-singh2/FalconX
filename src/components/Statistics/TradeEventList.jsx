@@ -54,7 +54,7 @@ import React, { useEffect, useState } from 'react';
 import { config } from '../../wagmiClient';
 import { Link } from 'react-router-dom';
 
-function TradeEventList({ contractAddress, tx}) {
+function TradeEventList({ contractAddress }) {
   const { chain, address } = useAccount();
   const { fetchEvents } = useTradeEvents();
   const [tradeEvents, setTradeEvents] = useState([]);
@@ -67,7 +67,7 @@ function TradeEventList({ contractAddress, tx}) {
       setTradeEvents(events);
     };
     getEvents();
-  }, [contractAddress, tx]);
+  }, [contractAddress]);
 
   return (
     <div className='buysell pricetabel'>

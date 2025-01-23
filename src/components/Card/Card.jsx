@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useAccount, useReadContracts } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import abi from "../../helper/ManagerFaucetAbi.json";
 import { daimond } from '../../helper/Helper';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ id }) => {
+const Card = ({ id, reserve }) => {
 
   const navigate = useNavigate();
 
@@ -12,20 +12,12 @@ const Card = ({ id }) => {
     return null;
   }
 
-  const { data, error, isLoading } = useReadContracts({
-    contracts: [{
+  const { data, error, isLoading } = useReadContract({
       abi,
       address: daimond,
       functionName: 'getPoolAt',
-      args: [(id-1).toString()],
+      args: [(id - 1).toString()],
       chainId: 97
-    }, {
-      abi,
-      address: daimond,
-      functionName: 'getPoolConfig',
-      args: [20],
-      chainId: 97
-    }]
   });
 
   if (isLoading) {
@@ -40,10 +32,10 @@ const Card = ({ id }) => {
   if (!data) {
     return;
   }
-  
 
 
-  const { id: poolId,poolDetails,virtualQuoteReserve,virtualBaseReserve } = data[0].result;
+
+  const { id: poolId, poolDetails, virtualQuoteReserve, virtualBaseReserve } = data;
 
   const poolDetailsParsed = poolDetails ? JSON.parse(poolDetails) : {};
   const pricePerToken = Number(virtualQuoteReserve || BigInt(0)) / Number(virtualBaseReserve || BigInt(0));  // Token price estimation
@@ -52,9 +44,9 @@ const Card = ({ id }) => {
   return (
 
     <div
-      key={data[0].result.id}
+      key={data.id}
       className="rounded-lg shadow-md overflow-hidden cursor-pointer"
-      onClick={() => navigate(`/token/bsc/${data[0].result.token}`)} // Navigate to /card-page with poolId as query param
+      onClick={() => navigate(`/token/bsc/${data.token}`)} // Navigate to /card-page with poolId as query param
     >
       {/* Card New Section */}
       <div className="cards dark">
@@ -66,27 +58,27 @@ const Card = ({ id }) => {
           />
           <div className="text-section">
             <h5 className="card-title">{poolDetailsParsed.name}</h5>
-            
 
-          <span>Progress</span>
-          <span className='hardcap'>Hard Cap</span>
-          <div className="progress">
-          <div className="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-          </div>
-          <span className='price'>4.913k  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" className="chainimg" alt="BNB" /></span> 
-        
+
+            <span>Progress</span>
+            <span className='hardcap'>Hard Cap</span>
+            <div className="progress">
+              <div className="progress-bar" role="progressbar" style={{ width: `${parseInt((data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve) / (data.maxListingQuoteAmount + data.listingFee)) ** 100}%` }} aria-valuenow={`${parseInt((data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve) / (data.maxListingQuoteAmount + data.listingFee)) ** 100}`} aria-valuemin="0" aria-valuemax="100">{parseInt((data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve) / (data.maxListingQuoteAmount + data.listingFee)) ** 100}%</div>
+            </div>
+            <span className='price'>4.913k  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" className="chainimg" alt="BNB" /></span>
+
             <span className='hardcap'><img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" className="hardcapchainimg" alt="BNB" /> 10.000k</span>
-        
+
 
             <p className="card-text">{poolDetailsParsed.description}</p>
           </div>
         </div>
         <hr />
         <p className='mcapdiv'>
-            <span className="socialicon">
+          <span className="socialicon">
             <i className="fa fa-globe"></i>
-            <i className="fa fa-twitter"></i> 
-            </span>
+            <i className="fa fa-twitter"></i>
+          </span>
           <span className="MCap">
             MCap: {marketCap ? `$${marketCap.toFixed(2)}` : 'Calculating...'}
           </span>
@@ -94,7 +86,7 @@ const Card = ({ id }) => {
       </div>
     </div>
   );
- 
+
 };
 
 export default Card;
