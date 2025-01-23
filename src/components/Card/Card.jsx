@@ -4,9 +4,10 @@ import abi from "../../helper/ManagerFaucetAbi.json";
 import { daimond } from '../../helper/Helper';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ id, reserve }) => {
+const Card = ({ id, reserve, activeTable }) => {
 
   const navigate = useNavigate();
+  const { address } = useAccount();
 
   if (!id) {
     return null;
@@ -31,6 +32,10 @@ const Card = ({ id, reserve }) => {
 
   if (!data) {
     return;
+  }
+
+  if (activeTable == "owner" && data.owner != address) {
+    return 
   }
 
 

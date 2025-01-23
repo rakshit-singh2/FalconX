@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { readContract, readContracts } from 'wagmi/actions';
+import { readContracts } from 'wagmi/actions';
 import { config } from '../../wagmiClient';
 import Card from '../Card/Card';
 import abi from "../../helper/ManagerFaucetAbi.json";
 import { daimond } from '../../helper/Helper';
 
 
-const CardList = () => {
+const CardList = ({activeTable}) => {
   const [error, setError] = useState(null); // Error state
   const [totalTokens, setTotalTokens] = useState(null); // Total tokens count state
   const [reserve, setReserve] = useState(null); // Total tokens count state
@@ -50,7 +49,7 @@ const CardList = () => {
       <div className="cardbox grid grid-cols-1 mb-5 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-8">
         {
           Array.from({ length: totalTokens || 0 }, (_, index) => {
-            return <Card key={index} id={index + 1} reserve={reserve} />;
+            return <Card key={index} id={index + 1} reserve={reserve} activeTable={activeTable}/>;
           })
         }
       </div>
