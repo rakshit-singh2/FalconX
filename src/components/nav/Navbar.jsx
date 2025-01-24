@@ -52,7 +52,7 @@ const Navbar = () => {
         </div>
 
         {/* Right side: ConnectButton and Language Selector */}
-        <div className="flex items-center gap-4">
+        <div className="connectbuttons flex items-center gap-4">
           {/* Language Select */}
           {/* <select
             onChange={(e) => handleLanguageChange(e.target.value)}

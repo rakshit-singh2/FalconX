@@ -40,7 +40,8 @@ header button div{ color:#fff !important;}
 header button svg{ color:#fff !important;}
 header{ background:#282828 !important;    border-bottom: 1px solid #343434;}
 
-.forminbox{ background:#1a1a1a; padding: 30px !important; border-radius:20px;}
+.forminbox{ background:#1a1a1a; padding: 30px !important; border-radius:20px;border: 1px solid #505050;}
+.tags-selection button:hover{ background:#fff; color:#000;}
 .forminbox .text-lg {font-size: 16px; line-height: 0px;}
 .tokenform{padding-top:70px !important;padding-bottom: 70px !important;}
 
@@ -68,7 +69,7 @@ header{ background:#282828 !important;    border-bottom: 1px solid #343434;}
     color: #000;
 }
 .text-gold{color: rgb(255 255 255) !important;}
-.createtokenbtn{ background:#000;}
+.createtokenbtn{ background:#fff;    color: #000;}
 .marquee-link{color:#2a2a2a !important;}
 header .text-gray-900{color:rgb(76 76 76) !important;}
 header{padding: 0px 64px !important;}
@@ -199,8 +200,9 @@ input:checked + .slider:before {
 .welcome{background: #141414;}
 .AdminPanel ul{padding-left: 0px;}
 .AdminPanel ul li{ border-bottom: 1px dashed #4c4c4c;}
-.AdminPanel ul li:hover a{background: #c1a444 !important; padding-left: 10px;}
+.AdminPanel ul li:hover a{background: #ffffff !important;  padding-left: 10px; text-decoration: none;color: #000;}
 .gbutton{background: #c1a444 !important;}
+.hover\:bg-gray-400:hover{background-color: rgb(116 116 116) !important;}
 .Running{ background: #fff !important; padding:5px 15px; color: #000;}
 .subtext{ margin-top: 3px;;}
 .Dashboard{ margin-bottom: 50px; padding-bottom: 45px; background: #141414;}
@@ -337,6 +339,11 @@ canvas{background: #ffffff !important; border-radius: 20px !important; }
 .lgs h1{ margin-top:61px;}
 .tpllogo{background: linear-gradient(180deg, rgba(77, 77, 77, 1) 50%, rgba(32, 32, 32, 1) 50%); margin-bottom:20px;}
 .buysell{padding-top: 18px; border-top: 1px dashed #4e4e4e;}
+.connectbuttons button{background: #fff !important; font-size: 16px !important; color:#000 !important;}
+.connectbuttons button .iekbcc0{ color:#000 !important;}
+.successfullytoken p{color: #fff;}
+.successbox {background: #323232;  padding: 60px; border: 1px solid #484848; border-radius: 10px;}
+.successbox h3{ font-size:26px !important;    margin-bottom: 25px;}
 
 
 @media only screen and (max-width: 768px) {

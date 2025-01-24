@@ -100,10 +100,10 @@ const CreateToken = () => {
   };
 
   return (
-    <main className="formmain mainbox relative top-0 min-h-[calc(100vh_-_182px)]">
+    <main className="successfullytoken formmain mainbox relative top-0 min-h-[calc(100vh_-_182px)]">
       <div className="w-full relative">
         {hash ?
-          <div className="hash-section text-center mt-8">
+          <div className="successbox hash-section text-center mt-8">
             <h3 className="text-xl font-bold text-green-600">Token Created Successfully!</h3>
             <p className="mt-2">
               Transaction Hash:{" "}
