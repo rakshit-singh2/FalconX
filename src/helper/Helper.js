@@ -1,5 +1,6 @@
 export const daimond = "0x4fDB78C09535C3848B660b1b44B3d5EF8a5dDE8b";
 
+export const tags = ['Meme', 'AI', 'DeFi', 'Games', 'Infra', 'De-Sci', 'Social', 'Depin', 'Charity', 'Others'];
 
 const bscRouters = {
     'UniswapV2': '0x4Dae2f939ACf50408e13d58534Ff8c2776d45265',

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import CardList from '../../components/CardList/CardList';
+import { tags } from '../../helper/Helper';
 
 
 
@@ -56,6 +57,16 @@ const Home = () => {
                 >
                   {t('Your Contributions')}
                 </button>
+                {tags.map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    className={`items-center justify-center h-10 px-9 text-center font-medium rounded-full overflow-hidden whitespace-nowrap lg:text-base ${activeTable === `Tag ${tag}` ? 'bg-white' : 'text-[#fff] dark:text-purple-500 hover:bg-gray-400'}`}
+                    onClick={() => handleButtonClick(`Tag ${tag}`)}
+                  >
+                    {t(tag)}
+                  </button>
+                ))}
               </div>
 
               <div className="createrightbtn mt-4 lg:mt-0">

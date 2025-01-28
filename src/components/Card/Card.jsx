@@ -41,6 +41,10 @@ const Card = ({ id, reserve, activeTable }) => {
   if (activeTable === "owner" && data.owner !== addressToCompare) {
     return;
   }
+  if (activeTable.includes("Tag") && poolDetailsParsed.Tag !== activeTable.split(" ")[1].trim()) {
+    console.log({id,'tagset':activeTable.split(" ")[1].trim(),'actual tag':poolDetailsParsed.tag})
+    return;
+  }
 
   const pricePerToken = Number(virtualQuoteReserve || BigInt(0)) / Number(virtualBaseReserve || BigInt(0));  // Token price estimation
   const marketCap = pricePerToken * Number(1000000000);
