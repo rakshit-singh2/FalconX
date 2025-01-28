@@ -20,29 +20,28 @@ const Card = ({ id, reserve, activeTable }) => {
       args: [(id - 1).toString()],
       chainId: 97
   });
-
+  
   if (isLoading) {
     return;
   }
-
-
+  
+  
   if (error) {
     return;
   }
-
+  
   if (!data) {
     return;
   }
 
-  if (activeTable == "owner" && data.owner != address) {
-    return 
-  }
-
-
-
   const { id: poolId, poolDetails, virtualQuoteReserve, virtualBaseReserve } = data;
 
   const poolDetailsParsed = poolDetails ? JSON.parse(poolDetails) : {};
+  const addressToCompare = address ? address : "0x0000000000000000000000000000000000000000";
+  if (activeTable === "owner" && data.owner !== addressToCompare) {
+    return;
+  }
+
   const pricePerToken = Number(virtualQuoteReserve || BigInt(0)) / Number(virtualBaseReserve || BigInt(0));  // Token price estimation
   const marketCap = pricePerToken * Number(1000000000);
 
