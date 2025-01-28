@@ -225,7 +225,13 @@ input:checked + .slider:before {
     border: 1px solid #565656;}
 .bsbox button{ background:#fff !important;}
 .bsbox .bg-gray-400 { --tw-bg-opacity: 1; background-color: rgb(126 126 126); color: #000 !important;}
-.buttonbox button{ border-radius:8px;height: 40px; padding: 8px 25px;}
+.buttonbox button {
+    border-radius: 8px;
+    height: 40px;
+    padding: 8px 13px;
+    font-size: 16px !important;
+    margin-left: 0px !important;
+}
 
 .PriceChart{margin-top: 15px;}
 .PriceChart thead{background: #ddd;font-size: 16px;}
@@ -346,7 +352,7 @@ canvas{background: #ffffff !important; border-radius: 20px !important; }
 .successbox h3{ font-size:26px !important;    margin-bottom: 25px;}
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 980px) {
   main {padding: 0px 15px !important;}
   .max-w-xs {max-width: 100%;}
   .pt-\[75px\] {padding-top: 35px;}
@@ -355,6 +361,16 @@ canvas{background: #ffffff !important; border-radius: 20px !important; }
   .extraoptions .col-md-4{ width:100%;}
   .liquiditydiv{width:100% !important;}
   .lastdiv{width:100% !important;}
+  .createrightbtn{margin-top: 35px;}
+  header .text-sm{font-size: 15px !important; padding: 0px 8px; margin-left:0px !important;}
+  header .w-8 {width:80px;}
+  .mainslider{ background:#000; padding:10px 0px 30px;}
+  .mainslider h1{font-size:38px !important;}
+  .mainslider h2{font-size:38px !important;}
+  .tpllogo img {float: left; width: auto; height: 70px; margin-right: 5px;}
+  .lgs h1 {margin-top: 31px;}
+  .buttonbox{    height: 80px; background:none;}
+  .buttonbox button{border: 1px solid #6a6a6a; margin-right: 4px !important; margin-bottom: 4px !important;    height: 38px;}
 }
 @media only screen and (max-width: 540px) {
 	header .text-sm {font-size: 12px;}
