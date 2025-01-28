@@ -12,6 +12,20 @@ const Admin = () => {
     const [tokenAddress, setTokenAddress] = useState('');
     const [totalToken, setTotalTokens] = useState();
     const [routes, setRoutes] = useState([]);
+    const [masterConfig, setMasterConfig] = useState({});
+    const [updatedMasterConfig, setUpdatedMasterConfig] = useState({
+        'weth': '',
+        'feeReceiver': '',
+        'feeBps': '',
+        'refBps': ''
+    });
+
+    const handleChange = (field, value) => {
+        setUpdatedMasterConfig(prevState => ({
+            ...prevState,
+            [field]: value
+        }));
+    };
 
     // State to control modal visibility
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,6 +112,42 @@ const Admin = () => {
         }
     };
 
+    const handleMasterConfig = async () => {
+        try {
+            // Multiply feeBps and refBps by 100 before sending to the contract
+            const updatedConfigs = {
+                ...updatedMasterConfig,
+                feeBps: updatedMasterConfig.feeBps * 100,
+                refBps: updatedMasterConfig.refBps * 100
+            };
+
+            // Start the contract call to setMasterConfig
+            const removeRouter = await writeContract(config, {
+                address: daimond,
+                abi: MangerAbi,
+                functionName: 'setMasterConfig',
+                chainId: 97,
+                args: [updatedConfigs],
+            });
+
+            // Wait for the transaction receipt to confirm it was mined
+            const receipt = await waitForTransactionReceipt(config, {
+                hash: removeRouter,
+            });
+            console.log(receipt.status);
+
+            // Check if the receipt is successful before reloading
+            if (receipt && receipt.status === 'success') {
+                window.location.reload();
+            } else {
+                alert("Transaction failed!");
+            }
+        } catch (error) {
+            console.error("Error occurred:", error);
+        }
+    };
+
+
     const { data, error, isLoading } = useReadContract({
         abi: MangerAbi,
         address: daimond,
@@ -137,9 +187,24 @@ const Admin = () => {
                 console.log(error)
             }
         };
+        const fetchConfig = async () => {
+            try {
+                // console.log("Fetching pool count...");
+                const result = await readContract(config, {
+                    address: daimond,
+                    abi: MangerAbi,
+                    functionName: 'getMasterConfig',
+                    chainId: 97
+                });
+                setMasterConfig(result);
+            } catch (error) {
+                console.log(error)
+            }
+        };
 
         fetchRouters();
         fetchPoolCount();
+        fetchConfig();
     }, []);
 
     // Function to open the modal
@@ -164,6 +229,10 @@ const Admin = () => {
         setIsModalOpen(false);
         setTokenAddress()
     };
+
+    function camelToReadable(text) {
+        return text.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, str => str.toUpperCase());
+    }
 
     return (
         <div className="flex flex-col lg:flex-row">
@@ -280,6 +349,62 @@ const Admin = () => {
                                 disabled={!tokenAddress}
                             >
                                 Search
+                            </button>
+                        </div>
+                        {/* Card 5 */}
+                        <div className="bsbox bg-gray-200 p-4 rounded-lg shadow-md">
+                            <h3 className="text-lg font-semibold mb-2">Platform details</h3>
+                            <ul className="text-sm text-black">
+                                {Object.entries(masterConfig).map(([key, value], index) => (
+                                    <li key={index}>
+                                        {camelToReadable(key)}: {
+                                            typeof value === 'bigint' ? (value / 100n).toString() : value != null ? value.toString() : 'N/A'
+                                        }
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        {/* Card 6 */}
+                        <div className="bsbox bg-gray-200 p-4 rounded-lg shadow-md">
+                            <h3 className="text-lg font-semibold mb-2">Set Master Config</h3>
+                            <input
+                                type="text"
+                                placeholder="Enter Weth Address"
+                                className="w-full p-2 mb-4 border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                value={updatedMasterConfig.weth}
+                                onChange={(e) => handleChange('weth', e.target.value)}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Enter Fee Receiver Address"
+                                className="w-full p-2 mb-4 border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                value={updatedMasterConfig.feeReceiver}
+                                onChange={(e) => handleChange('feeReceiver', e.target.value)}
+                            />
+                            <input
+                                type="number"
+                                placeholder="Enter Platform fee Percentage"
+                                className="w-full p-2 mb-4 border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                value={updatedMasterConfig.feeBps}
+                                onChange={(e) => handleChange('feeBps', e.target.value)}
+                                max={30}
+                                min={0}
+                            />
+                            <input
+                                type="number"
+                                placeholder="Enter Referral fee Percentage"
+                                className="w-full p-2 mb-4 border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                value={updatedMasterConfig.refBps}
+                                onChange={(e) => handleChange('refBps', e.target.value)}
+                                max={30}
+                                min={0}
+                            />
+                            <button
+                                onClick={handleMasterConfig}
+                                className={`w-full p-2 rounded-md transition-colors ${updatedMasterConfig.weth && updatedMasterConfig.feeReceiver && updatedMasterConfig.feeBps && updatedMasterConfig.refBps ? 'bg-gold gbutton text-white hover:bg-gold' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
+                                disabled={!updatedMasterConfig.weth || !updatedMasterConfig.feeReceiver || !updatedMasterConfig.feeBps || !updatedMasterConfig.refBps}
+                            >
+                                Set Config
                             </button>
                         </div>
                     </div>
