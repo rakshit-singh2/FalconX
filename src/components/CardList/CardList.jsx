@@ -38,8 +38,8 @@ const CardList = ({activeTable}) => {
     };
 
     fetchPoolCount();
-  }, []); // This runs only once, when the component mounts
-
+  }, []);
+  
   if (error) {
     return <div className="flex justify-center items-center h-14">Error: {error}</div>;
   }
