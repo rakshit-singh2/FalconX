@@ -23,12 +23,12 @@ const CardPage = () => {
   const { data, error, isLoading } = useReadContracts({
     contracts: [{
       abi,
-      address: daimond,
+      address: daimond[97],
       functionName: 'getPoolInfo',
       args: [token],
     }, {
       abi,
-      address: daimond,
+      address: daimond[97],
       functionName: 'getPoolConfig',
       args: [20],
 
