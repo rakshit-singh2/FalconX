@@ -468,7 +468,7 @@ const Admin = () => {
                                     {Object.entries(masterConfig).map(([key, value], index) => (
                                         <li key={index}>
                                             {camelToReadable(key)}: {
-                                                typeof value === 'bigint' ? (value / 100n).toString() : value != null ? value.toString() : 'N/A'
+                                                typeof value === 'bigint' ? (value / 100n).toString() + ' %' : value != null ? value.toString() : 'N/A'
                                             }
                                         </li>
                                     ))}

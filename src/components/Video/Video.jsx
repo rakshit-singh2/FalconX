@@ -6,7 +6,7 @@ const Video = ({link}) => {
     let embedUrl;
 
     if (!link) {
-        embedUrl='https://www.youtube.com/embed/22bLNq6iCjU';
+        return;
     } else if  (link.includes('embed')) {
         embedUrl = link;
     } else {
