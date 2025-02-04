@@ -70,10 +70,10 @@ const Admin = () => {
             }
 
             const tx = await writeContract(config, {
-                address: daimond[97],
+                address: daimond[1868],
                 abi: MangerAbi,
                 functionName: 'setWhitelistedRouters',
-                chainId: 97,
+                chainId: 1868,
                 args: [
                     [routerName],
                     true,
@@ -94,21 +94,21 @@ const Admin = () => {
     };
     const handleSetNewAdmin = async () => {
         try {
-            // Check if routerName is valid before using length
-            if (routerName?.length !== 42) {
+            // Check if newAdmin is valid before using length
+            if (newAdmin?.length !== 42) {
                 alert("Address must be 42 characters (including 0x prefix).");
                 return;
             }
-            if (!/^0x[a-fA-F0-9]{40}$/.test(routerName)) {
+            if (!/^0x[a-fA-F0-9]{40}$/.test(newAdmin)) {
                 alert("Address must be a valid hex value of 40 bytes.");
                 return;
             }
 
             const tx = await writeContract(config, {
-                address: daimond[97],
+                address: daimond[1868],
                 abi: MangerAbi,
                 functionName: 'setAdmin',
-                chainId: 97,
+                chainId: 1868,
                 args: [newAdmin],
             });
 
@@ -139,10 +139,10 @@ const Admin = () => {
             }
 
             const tx = await writeContract(config, {
-                address: daimond[97],
+                address: daimond[1868],
                 abi: MangerAbi,
                 functionName: 'setWhitelistedRouters',
-                chainId: 97,
+                chainId: 1868,
                 args: [
                     [routerId],
                     false,
@@ -168,10 +168,10 @@ const Admin = () => {
         try {
             // Start the contract call to setPaused
             const tx = await writeContract(config, {
-                address: daimond[97],
+                address: daimond[1868],
                 abi: MangerAbi,
                 functionName: 'setPaused',
-                chainId: 97,
+                chainId: 1868,
                 args: [!data],
             });
 
@@ -196,10 +196,10 @@ const Admin = () => {
             // Multiply feeBps and refBps by 100 before sending to the contract
             // Start the contract call to setMasterConfig
             const tx = await writeContract(config, {
-                address: daimond[97],
+                address: daimond[1868],
                 abi: MangerAbi,
                 functionName: 'setMasterConfig',
-                chainId: 97,
+                chainId: 1868,
                 args: [updatedMasterConfig.weth, updatedMasterConfig.feeReceiver, updatedMasterConfig.feeBps * 100, updatedMasterConfig.refBps * 100],
             });
 
@@ -226,10 +226,10 @@ const Admin = () => {
                 return;
             }
             const tx = await writeContract(config, {
-                address: daimond[97],
+                address: daimond[1868],
                 abi: MangerAbi,
-                functionName: 'setUpdatedPoolConfig',
-                chainId: 97,
+                functionName: 'setPoolConfig',
+                chainId: 1868,
                 args: [updatedPoolConfig.index, updatedPoolConfig],
             });
     
@@ -252,19 +252,19 @@ const Admin = () => {
 
     const { data, error, isLoading } = useReadContract({
         abi: MangerAbi,
-        address: daimond[97],
+        address: daimond[1868],
         functionName: 'isPaused',
-        chainId: 97
+        chainId: 1868
     });
 
     useEffect(() => {
         const fetchRouters = async () => {
             try {
                 const totalrouters = await readContract(config, {
-                    address: daimond[97],
+                    address: daimond[1868],
                     abi: MangerAbi,
                     functionName: 'getRouters',
-                    chainId: 97,
+                    chainId: 1868,
                 });
                 console.log({ totalrouters })
                 // Ensure `totalrouters` is an array before updating state
@@ -280,10 +280,10 @@ const Admin = () => {
             try {
                 // console.log("Fetching pool count...");
                 const result = await readContract(config, {
-                    address: daimond[97],
+                    address: daimond[1868],
                     abi: MangerAbi,
                     functionName: 'getPoolCount',
-                    chainId: 97
+                    chainId: 1868
                 });
                 setTotalTokens(result.toString());
             } catch (error) {
@@ -294,10 +294,10 @@ const Admin = () => {
             try {
                 // console.log("Fetching pool count...");
                 const result = await readContract(config, {
-                    address: daimond[97],
+                    address: daimond[1868],
                     abi: MangerAbi,
                     functionName: 'getMasterConfig',
-                    chainId: 97
+                    chainId: 1868
                 });
                 setMasterConfig(result);
             } catch (error) {
@@ -308,10 +308,10 @@ const Admin = () => {
             try {
                 // console.log("Fetching pool count...");
                 const result = await readContract(config, {
-                    address: daimond[97],
+                    address: daimond[1868],
                     abi: MangerAbi,
                     functionName: 'getPoolConfig',
-                    chainId: 97,
+                    chainId: 1868,
                     args:[20]
                 });
                 setPoolConfig(result);
@@ -331,10 +331,10 @@ const Admin = () => {
         try {
             const data = await readContract(config, {
                 abi: MangerAbi,
-                address: daimond[97],
+                address: daimond[1868],
                 functionName: 'getPoolInfo',
                 args: [tokenAddress],
-                chainId: 97
+                chainId: 1868
             });
             setTokenAddress(data)
         } catch (error) {

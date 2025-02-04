@@ -73,7 +73,7 @@ const CreateToken = () => {
 
       const data = await writeContractAsync({
         abi: degenFacetAbi,
-        address: daimond[97],
+        address: daimond[1868],
         chainID: parseInt(chain.id, 10),
         functionName: 'createPool',
         value: initialBuyAmount, // Add value if needed

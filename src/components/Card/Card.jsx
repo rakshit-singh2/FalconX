@@ -15,10 +15,10 @@ const Card = ({ id, reserve, activeTable }) => {
 
   const { data, error, isLoading } = useReadContract({
       abi,
-      address: daimond[97],
+      address: daimond[1868],
       functionName: 'getPoolAt',
       args: [(id - 1).toString()],
-      chainId: 97
+      chainId: 1868
   });
   
   if (isLoading) {

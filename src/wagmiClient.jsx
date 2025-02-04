@@ -1,6 +1,6 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { http } from 'wagmi';
-import {bscTestnet} from 'wagmi/chains';
+import {bscTestnet, soneium} from 'wagmi/chains';
 
 export const config = getDefaultConfig({
   appName: 'HowSwap',
@@ -8,10 +8,12 @@ export const config = getDefaultConfig({
   chains: [
     // mainnet,
     // bsc,
-    bscTestnet,
+    // bscTestnet,
+    soneium
   ],
   transports: {
-    [bscTestnet.id]: http("https://bsc-prebsc-dataseed.bnbchain.org"),
+    // [bscTestnet.id]: http("https://bsc-prebsc-dataseed.bnbchain.org"),
     // [bsc.id]: http("https://bsc-mainnet.infura.io/v3/113f8fe63628446cb141f8e6618518ce"),
+    [soneium.id]: http("https://soneium-mainnet.g.alchemy.com/v2/XQAa0JjXMHCm5fyFr1cTq-NdtNWsoO7P"),
   },
 });

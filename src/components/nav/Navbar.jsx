@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 import logo from "../../assets/logo/logo.png";
+import { useAccount } from 'wagmi';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation(); // Use translation hook
-
+  const { address } = useAccount()
   // Change language function
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang);
@@ -18,33 +19,33 @@ const Navbar = () => {
         {/* Left side: Logo and Links (Board, Create Token) */}
         <div className="flex items-center gap-5">
           <NavLink to="/" className="w-8 sm:w-[200px]">
-              <h1>  <img src="./logo/logo.png" className="logo" alt="logo" /></h1>
+            <h1>  <img src="./logo/logo.png" className="logo" alt="logo" /></h1>
           </NavLink>
           <div className="flex space-x-6">
             <NavLink
               to="/"
               className="text-sm  hover:text-gold font-semibold font-bold text-gold"
             >
-              {t('board')} 
+              {t('board')}
             </NavLink>
             <NavLink
               to="/create-token"
               className="text-sm  hover:text-gold font-semibold font-bold text-gold"
-              
+
             >
               {t('createToken')} {/* Use translation key */}
             </NavLink>
-            <NavLink
+            {address == '0x3FD8A2D274a7B942B4cDe3a09123947c601225FE' && <NavLink
               to="/admin-panel"
               className="text-sm  hover:text-gold font-semibold font-bold text-gold"
-              
+
             >
               {t('Admin')} {/* Use translation key */}
-            </NavLink>
+            </NavLink>}
             <NavLink
               to="#"
               className="text-sm  hover:text-gold font-semibold font-bold text-gold"
-              
+
             >
               {t('KYC')} {/* Use translation key */}
             </NavLink>

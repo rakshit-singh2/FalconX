@@ -5,7 +5,7 @@ body{ background:#282828;}
 a{ font-size:15px !important;}
 p{ font-size:15px !important;}
 button{font-size:18px !important; text-transform: capitalize; font-weight:500 !important;}
-
+.rightbox input{color: #fff;}
 header{ box-shadow:none !important;}
 header button{background:#fff!important; border-radius: 7px !important; padding: 5px 15px 8px !important;}
 header .text-sm {font-size: 18px !important; font-weight: 500; padding: 0px 10px;    color: #fff !important;}
