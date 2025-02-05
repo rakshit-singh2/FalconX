@@ -14,22 +14,22 @@ const Card = ({ id, reserve, activeTable }) => {
   }
 
   const { data, error, isLoading } = useReadContract({
-      abi,
-      address: daimond[1868],
-      functionName: 'getPoolAt',
-      args: [(id - 1).toString()],
-      chainId: 1868
+    abi,
+    address: daimond[1868],
+    functionName: 'getPoolAt',
+    args: [(id - 1).toString()],
+    chainId: 1868
   });
-  
+
   if (isLoading) {
     return;
   }
-  
-  
+
+
   if (error) {
     return;
   }
-  
+
   if (!data) {
     return;
   }
@@ -42,7 +42,7 @@ const Card = ({ id, reserve, activeTable }) => {
     return;
   }
   if (activeTable.includes("Tag") && poolDetailsParsed.Tag !== activeTable.split(" ")[1].trim()) {
-    console.log({id,'tagset':activeTable.split(" ")[1].trim(),'actual tag':poolDetailsParsed.tag})
+    console.log({ id, 'tagset': activeTable.split(" ")[1].trim(), 'actual tag': poolDetailsParsed.tag })
     return;
   }
 
@@ -73,9 +73,9 @@ const Card = ({ id, reserve, activeTable }) => {
             <div className="progress">
               <div className="progress-bar" role="progressbar" style={{ width: `${parseInt((data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve) / (data.maxListingQuoteAmount + data.listingFee)) ** 100}%` }} aria-valuenow={`${parseInt((data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve) / (data.maxListingQuoteAmount + data.listingFee)) ** 100}`} aria-valuemin="0" aria-valuemax="100">{parseInt((data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve) / (data.maxListingQuoteAmount + data.listingFee)) ** 100}%</div>
             </div>
-            <span className='price'>4.913k  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" className="chainimg" alt="BNB" /></span>
+            <span className='price'>4.913k  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAA3ElEQVR4AY3SgQbCYBTF8fNmgV4ggEAAI4hAYDAEHwQD+AAG9AABMIAIAhgYAhYwbt3bubol1R+MH2d3DPKlv7HNKdUfsV9Ca08ounesYB3PuFe+4iQaMHGMdgKiIm5ey1RQS8eOJlaC1RELaK2wA7TigaPveFtoo2HL52dcUsy+wviebGgX1BF3uJd+IWeXEec+6wcFG/yz4cdVb/dAHriG1rg10DbEHtZ6MNvDuhD1Omu6WY20WhxlBtbTFkIMeglG1GqzBlYWRzZU6LPRdpCIbNzn5tD9/1N/6QZlMwcqRvoNxQAAAABJRU5ErkJggg==" className="chainimg" alt="ETH" /></span>
 
-            <span className='hardcap'><img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" className="hardcapchainimg" alt="BNB" /> 10.000k</span>
+            <span className='hardcap'><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAA3ElEQVR4AY3SgQbCYBTF8fNmgV4ggEAAI4hAYDAEHwQD+AAG9AABMIAIAhgYAhYwbt3bubol1R+MH2d3DPKlv7HNKdUfsV9Ca08ounesYB3PuFe+4iQaMHGMdgKiIm5ey1RQS8eOJlaC1RELaK2wA7TigaPveFtoo2HL52dcUsy+wviebGgX1BF3uJd+IWeXEec+6wcFG/yz4cdVb/dAHriG1rg10DbEHtZ6MNvDuhD1Omu6WY20WhxlBtbTFkIMeglG1GqzBlYWRzZU6LPRdpCIbNzn5tD9/1N/6QZlMwcqRvoNxQAAAABJRU5ErkJggg==" className="hardcapchainimg" alt="ETH" /> 10.000k</span>
 
 
             <p className="card-text">{poolDetailsParsed.description}</p>

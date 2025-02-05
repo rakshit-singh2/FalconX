@@ -130,7 +130,7 @@ const CardPage = () => {
         type: 'linear',
         title: {
           display: true,
-          text: `Supply in ${chain?.nativeCurrency?.symbol ?? 'BNB'}`,
+          text: `Supply in ${chain?.nativeCurrency?.symbol ?? 'ETH'}`,
         },
       },
       y: {
@@ -172,7 +172,7 @@ const CardPage = () => {
                     <li>
                       <strong>Address :
                         <a
-                          href={`https://testnet.bscscan.com/token/${data?.token}`}
+                          href={`https://soneium.blockscout.com/token/${data?.token}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="ml-3 text-gray-500 hover:underline hover:text-gold"

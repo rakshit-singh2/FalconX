@@ -24,7 +24,7 @@ const Price = () => {
       const formattedData = [
         { symbol: "BTC", price: data.bitcoin.usd, change: data.bitcoin.usd_24h_change },
         { symbol: "ETH", price: data.ethereum.usd, change: data.ethereum.usd_24h_change },
-        { symbol: "BNB", price: data.binancecoin.usd, change: data.binancecoin.usd_24h_change },
+        { symbol: "ETH", price: data.binancecoin.usd, change: data.binancecoin.usd_24h_change },
         { symbol: "DOGE", price: data.dogecoin.usd, change: data.dogecoin.usd_24h_change },
         { symbol: "SOL", price: data.solana.usd, change: data.solana.usd_24h_change },
         { symbol: "ORDI", price: data.ordinals.usd, change: data.ordinals.usd_24h_change },

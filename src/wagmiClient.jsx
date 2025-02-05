@@ -12,7 +12,7 @@ export const config = getDefaultConfig({
     soneium
   ],
   transports: {
-    // [bscTestnet.id]: http("https://bsc-prebsc-dataseed.bnbchain.org"),
+    // [bscTestnet.id]: http("https://bsc-prebsc-dataseed.ETHchain.org"),
     // [bsc.id]: http("https://bsc-mainnet.infura.io/v3/113f8fe63628446cb141f8e6618518ce"),
     [soneium.id]: http("https://soneium-mainnet.g.alchemy.com/v2/XQAa0JjXMHCm5fyFr1cTq-NdtNWsoO7P"),
   },
