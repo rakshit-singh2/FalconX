@@ -371,7 +371,7 @@ const Admin = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 mt-6">
                             <div className="bg-gray-200 p-4 rounded-lg shadow-md transition-shadow duration-300">
                                 <h3 className="text-lg font-semibold">
-                                    Total Token Meme : <span>{isNaN(totalToken) ? 'Loading...' : totalToken}</span>
+                                    Total Token Meme : <span>{isNaN(totalToken) ? 'Loading...' : totalToken-1}</span>
                                 </h3>
                             </div>
                             <div className="bg-gray-200 p-4 rounded-lg">

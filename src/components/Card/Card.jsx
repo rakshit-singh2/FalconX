@@ -9,8 +9,8 @@ const Card = ({ id, reserve, activeTable }) => {
   const navigate = useNavigate();
   const { address } = useAccount();
 
-  if (!id) {
-    return null;
+  if (!id || id == 1) {
+    return;
   }
 
   const { data, error, isLoading } = useReadContract({
