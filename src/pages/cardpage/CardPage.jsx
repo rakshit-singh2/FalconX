@@ -172,7 +172,7 @@ const CardPage = () => {
                     <li>
                       <strong>Address :
                         <a
-                          href={`https://soneium.blockscout.com/token/${data?.token}`}
+                          href={`https://soneium.blockscout.com/token/${data[0].result?.token}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="ml-3 text-gray-500 hover:underline hover:text-gold"
