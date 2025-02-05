@@ -54,7 +54,7 @@ const Card = ({ id, reserve, activeTable }) => {
     <div
       key={data.id}
       className="rounded-lg shadow-md overflow-hidden cursor-pointer"
-      onClick={() => navigate(`/token/bsc/${data.token}`)} // Navigate to /card-page with poolId as query param
+      onClick={() => navigate(`/token/sonieum/${data.token}`)} // Navigate to /card-page with poolId as query param
     >
       {/* Card New Section */}
       <div className="cards dark">
