@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAccount, useReadContract } from 'wagmi';
 import abi from "../../helper/ManagerFaucetAbi.json";
-import { daimond } from '../../helper/Helper';
+import { daimond, priceInDollar } from '../../helper/Helper';
 import { useNavigate } from 'react-router-dom';
 
 const Card = ({ id, reserve, activeTable }) => {
@@ -34,9 +34,9 @@ const Card = ({ id, reserve, activeTable }) => {
     return;
   }
 
-  const { id: poolId, poolDetails, virtualQuoteReserve, virtualBaseReserve } = data;
 
-  const poolDetailsParsed = poolDetails ? JSON.parse(poolDetails) : {};
+
+  const poolDetailsParsed = data.poolDetails ? JSON.parse(data.poolDetails) : {};
   const addressToCompare = address ? address : "0x0000000000000000000000000000000000000000";
   if (activeTable === "owner" && data.owner !== addressToCompare) {
     return;
@@ -46,15 +46,12 @@ const Card = ({ id, reserve, activeTable }) => {
     return;
   }
 
-  const pricePerToken = Number(virtualQuoteReserve || BigInt(0)) / Number(virtualBaseReserve || BigInt(0));  // Token price estimation
-  const marketCap = pricePerToken * Number(1000000000);
-
   return (
 
     <div
       key={data.id}
       className="rounded-lg shadow-md overflow-hidden cursor-pointer"
-      onClick={() => navigate(`/token/sonieum/${data.token}`)} // Navigate to /card-page with poolId as query param
+      onClick={() => navigate(`/token/1868/${data.token}`)} // Navigate to /card-page with poolId as query param
     >
       {/* Card New Section */}
       <div className="cards dark">
@@ -88,7 +85,7 @@ const Card = ({ id, reserve, activeTable }) => {
             <i className="fa fa-twitter"></i>
           </span>
           <span className="MCap">
-            MCap: {marketCap ? `$${marketCap.toFixed(2)}` : 'Calculating...'}
+          MCap: ${parseFloat(parseInt(data.virtualQuoteReserve) * 10000000 * priceInDollar['1868'] / parseInt(data.maxListingBaseAmount)).toFixed(12)}
           </span>
         </p>
       </div>

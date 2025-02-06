@@ -17,3 +17,8 @@ export const routers = {
     '1868': sonieumRouters,
     '97': bscTestnetRouters,
 }
+
+export const priceInDollar = {
+    '1868': 0.9993,  // 0.9993 as BigInt
+    '97': 67754,
+}

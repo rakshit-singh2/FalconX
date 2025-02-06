@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { formatUnits } from 'ethers';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useBalance, useReadContract } from 'wagmi';
 import { readContract, waitForTransactionReceipt, writeContract } from 'wagmi/actions';
 import { config } from '../../wagmiClient';
 import { daimond } from '../../helper/Helper';
 import DegenFacetabi from "../../helper/DegenFacetAbi.json";
 import TokenABi from "../../helper/TokenAbi.json"
 
-const BuySell = ({ data, token, balanceOf }) => {
+const BuySell = ({ data, token, tokenBalance, reserve }) => {
 
     const { chain } = useAccount();
-
+    const { data: balance } = useBalance()
     const [amount, setAmount] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
     const [isSaleAvailable, setIsSaleAvailable] = useState(false);
@@ -42,7 +42,7 @@ const BuySell = ({ data, token, balanceOf }) => {
     }, [startTime]);
 
     useEffect(() => {
-        if (amount <= 0 || !token) return; // Prevent fetching if amount is invalid
+        if (amount <= 0 || !token) return;
         fetchAmountOut(amount);
     }, [amount, isBuy, token]);
 
@@ -114,7 +114,7 @@ const BuySell = ({ data, token, balanceOf }) => {
             })
             setApprove(amount);
         } catch (error) {
-            console.log('Error during approve:', error);
+            console.error('Error during approve:', error);
         }
     };
 
@@ -130,7 +130,7 @@ const BuySell = ({ data, token, balanceOf }) => {
                     token,
                     "0x0000000000000000000000000000000000000000",
                     BigInt(approve * 10 ** 18),
-                    amountOut[0] - amountOut[4],
+                    amountOut[0] < amountOut[1] ? amountOut[0] : amountOut[1],
                 ],
             });
 
@@ -145,28 +145,12 @@ const BuySell = ({ data, token, balanceOf }) => {
     };
 
     const poolDetailsParsed = data?.poolDetails ? JSON.parse(data.poolDetails) : {};
-    const baseReserve = Number(data.virtualBaseReserve) / (10 ** 18);
-    const quoteReserve = Number(data.virtualQuoteReserve) / (10 ** 18);
-    const maxSupply = Number(data.maxListingBaseAmount) / (10 ** 18);
-
-    const prices = [];
-    const supplies = [];
-
-    // Function to format the received amount with 3 decimal places
-    const formatAmount = (amount) => {
-        return parseFloat(formatUnits(amount, 18)).toFixed(3);
-    };
 
     return (
 
-        
         <div className="mt-4 buysell">
             {isSaleAvailable ? (
                 <>
-
-
-
-
                     <div className="btngroup flex mb-6">
                         <button
                             className={`buy px-6 py-3 text-white text-md font-semibold rounded-lg transition duration-300 w-full ${!isBuy ? '' : 'bg-gold'}`}
@@ -200,14 +184,15 @@ const BuySell = ({ data, token, balanceOf }) => {
                         ) : (
                             <p>Sell Tax: <span className='receivedvalu'>{parseInt(data?.sellFeeRate)}%</span></p>
                         )}
-                        <p> Received : <span className='receivedvalu'>{formatAmount(amountOut[0])} </span></p>
+                        <p> Max Received : <span className='receivedvalu'>{parseFloat(formatUnits(amountOut[0] < amountOut[1] ? amountOut[0] : amountOut[1],18)).toFixed(12) }</span></p>
                         <p> Min Received : <span className='receivedvalu'>
                             {isBuy ?
-                                formatAmount(amountOut[1]) * (1 - parseInt(data?.buyFeeRate) / 100) :
-                                formatAmount(amountOut[1]) * (1 - parseInt(data?.sellFeeRate) / 100)
+                                parseFloat(formatUnits(amountOut[1],18) * (1 - parseInt(data?.buyFeeRate) / 100)).toFixed(12) :
+                                parseFloat(formatUnits(amountOut[1],18) * (1 - parseInt(data?.sellFeeRate) / 100)).toFixed(12) 
                             }
                         </span></p>
-                        <p>Balance of : <span className='receivedvalu'>{formatAmount(balanceOf)}</span></p>
+                        {isBuy ? <p>Your Balance: <span className='receivedvalu'>{balance ?? 0} {chain ? chain.nativeCurrency.symbol : 'currency'}</span></p> :
+                            <p>Your Holdings: <span className='receivedvalu'>{parseFloat(formatUnits(tokenBalance,18)).toFixed(12)} {poolDetailsParsed.symbol}</span></p>}
                     </div>
                     <div className="flex justify-between space-x-4">
                         {isBuy ? (
@@ -238,6 +223,7 @@ const BuySell = ({ data, token, balanceOf }) => {
                             </>
                         )}
                     </div>
+                    <p className='cl'>Needs {(parseFloat((data.maxListingQuoteAmount + data.listingFee) - (data.virtualQuoteReserve - reserve.initialVirtualQuoteReserve)) / 10 ** 18).toFixed(12)} ETH to fill the bonding curve</p>
                 </>
             ) : (
                 <div className="flex flex-col items-center justify-center bg-gold from-blue-500 to-purple-600 p-6 rounded-lg shadow-lg w-full max-w-xs mx-auto">

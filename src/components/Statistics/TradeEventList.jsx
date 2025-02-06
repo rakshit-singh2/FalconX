@@ -58,6 +58,7 @@ function TradeEventList({ contractAddress }) {
   const { chain, address } = useAccount();
   const { fetchEvents } = useTradeEvents();
   const [tradeEvents, setTradeEvents] = useState([]);
+  console.log(tradeEvents)
   const [allYour, setAllYour] = useState(false)
 
   const blockExplorerUrl = chain?.blockExplorers?.default?.url;
@@ -81,7 +82,7 @@ function TradeEventList({ contractAddress }) {
         <button
           className={`sell px-6 py-3 text-white text-md font-semibold rounded-lg  transition duration-300 w-full ${allYour ? '' : 'bg-gold'}`}
           onClick={() => setAllYour(false)}>
-          <h2>Your Transcations</h2>
+          <h2>Your Transactions</h2>
         </button>
       </div>
 
@@ -91,6 +92,9 @@ function TradeEventList({ contractAddress }) {
           <thead className="bg-gray-100">
             <tr>
               <th className="py-3 px-6 text-gray-700 font-semibold">Owner</th>
+              <th className="py-3 px-6 text-gray-700 font-semibold">Type</th>
+              <th className="py-3 px-6 text-gray-700 font-semibold">Sonieum</th>
+              <th className="py-3 px-6 text-gray-700 font-semibold">Token</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Type</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Age (Days)</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Transaction Hash</th>
@@ -102,6 +106,12 @@ function TradeEventList({ contractAddress }) {
                 <tr key={index} className="border-t hover:bg-gray-50">
                   <td className="py-3 px-6 text-gray-800">{event.user}</td>
                   <td className="py-3 px-6">{event.isBuy ? 'Buy' : 'Sell'}</td>
+                  <td className="py-3 px-6">
+                    {event.isBuy ? (BigInt(event.amountIn) / BigInt(10 ** 18)).toString() : (parseFloat(event.amountOut) / 10 ** 18).toFixed(18)}
+                  </td>
+                  <td className="py-3 px-6">
+                    {event.isBuy ? (parseFloat(event.amountOut) / 10 ** 18).toFixed(18) : (BigInt(event.amountIn) / BigInt(10 ** 18)).toString()}
+                  </td>
                   <td className="py-3 px-6">
                     {Math.floor((new Date() - event.timestamp) / (1000 * 60 * 60 * 24))}
                   </td>

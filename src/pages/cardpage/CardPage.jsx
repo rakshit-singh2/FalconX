@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { readContract } from 'wagmi/actions';
 import abi from "../../helper/ManagerFaucetAbi.json";
-import { daimond, routers } from '../../helper/Helper';
+import { daimond, priceInDollar, routers } from '../../helper/Helper';
 import TokenAbi from '../../helper/TokenAbi.json';
 import { useAccount, useReadContract, useReadContracts } from 'wagmi';
 import logo from "../../assets/logo/logo.png";
@@ -38,7 +38,7 @@ const CardPage = () => {
 
   const { chain, address } = useAccount();
 
-  const [balanceOf, setBalaceOf] = useState(0);
+  const [tokenBalance, setTokenBalance] = useState(0);
 
   const fetchBalaceOf = async () => {
     try {
@@ -51,7 +51,7 @@ const CardPage = () => {
           address,
         ],
       });
-      setBalaceOf(result)
+      setTokenBalance(result)
     } catch (error) {
       console.error('Error fetching amountOut:', error);
     }
@@ -198,10 +198,9 @@ const CardPage = () => {
                 <div className="progress">
                   <div className="progress-bar" role="progressbar" style={{ width: `${parseInt((data[0].result.virtualQuoteReserve - data[1].result.initialVirtualQuoteReserve) / (data[0].result.maxListingQuoteAmount + data[0].result.listingFee)) ** 100}%` }} aria-valuenow={`${parseInt((data[0].result.virtualQuoteReserve - data[1].result.initialVirtualQuoteReserve) / (data[0].result.maxListingQuoteAmount + data[0].result.listingFee)) ** 100}`} aria-valuemin="0" aria-valuemax="100">{`${parseInt((data[0].result.virtualQuoteReserve - data[1].result.initialVirtualQuoteReserve) / (data[0].result.maxListingQuoteAmount + data[0].result.listingFee)) ** 100}%`}</div>
                 </div>
-                <p>When the market cap hits $79.4K, All liquidity from the bonding curve will be deposited into Raydium AMM V4 and burned. The progression accelerates as the price rises</p>
+                <p>When the market cap hits <span className='text-yellow-100'>${(parseInt(data[1].result.maxListingQuoteAmount) * 10000000 * priceInDollar['1868'] / parseInt(data[1].result.maxListingBaseAmount)).toString()}</span>, All liquidity from the bonding curve will be deposited into Pancake Swap and burned. The progression accelerates as the price rises</p>
 
-                <BuySell data={data[0].result} token={token} balanceOf={balanceOf} />
-                <p className='bonding'>Needs 91.7001 SOL to fill the bonding curve</p>
+                <BuySell data={data[0].result} token={token} tokenBalance={tokenBalance} reserve={data[1].result} />
               </div>
               <div className='chartbox' style={{ width: '100%' }}>
                 <Line data={chartData} options={options} />

@@ -26,7 +26,7 @@ const Video = ({link}) => {
     }
   return (
     <div className='boxc'>
-        <iframe width="100%" height="400" src={embedUrl} title="🔸PipiLol - A Simple Dive into the Hidden Gem on #Core🔸" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+        <iframe width="100%" height="400" src={embedUrl} title="🔸PipiLol - A Simple Dive into the Hidden Gem on #Core🔸" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
         </div>
   )
 }
