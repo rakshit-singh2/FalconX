@@ -5,6 +5,7 @@ import CreateToken from './pages/createToken/CreateToken';
 import Footer from './components/footer/Footer';
 import CardPage from './pages/cardpage/CardPage';
 import Admin from './pages/admin/Admin';
+import ProtectedRoute from './components/Protected/Protected';
 
 const App = () => {
   return (
@@ -16,9 +17,11 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/token/:chain/:token" element={<CardPage />} />
         <Route path="/create-token" element={<CreateToken />} />
-        <Route path="/admin-panel" element={<Admin />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin-panel" element={<Admin />} />
+        </Route>
       </Routes>
-      <Footer/>
+      <Footer />
     </Router>
   );
 }

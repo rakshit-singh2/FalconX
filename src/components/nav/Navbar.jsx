@@ -4,6 +4,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 import logo from "../../assets/logo/logo.png";
 import { useAccount } from 'wagmi';
+import { admin } from '../../helper/Helper';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation(); // Use translation hook
@@ -35,7 +36,7 @@ const Navbar = () => {
             >
               {t('createToken')} {/* Use translation key */}
             </NavLink>
-            {address == '0x3FD8A2D274a7B942B4cDe3a09123947c601225FE' && <NavLink
+            {address == admin && <NavLink
               to="/admin-panel"
               className="text-sm  hover:text-gold font-semibold font-bold text-gold"
 
