@@ -9,7 +9,7 @@ const Card = ({ id, reserve, activeTable }) => {
   const navigate = useNavigate();
   const { address } = useAccount();
 
-  if (!id || id == 1) {
+  if (!id || id == 1 || id == 2 || id == 3 || id == 4 || id == 5 || id == 6) {
     return;
   }
 
@@ -85,7 +85,7 @@ const Card = ({ id, reserve, activeTable }) => {
             <i className="fa fa-twitter"></i>
           </span>
           <span className="MCap">
-          MCap: ${parseFloat(parseInt(data.virtualQuoteReserve) * 10000000 * priceInDollar['1868'] / parseInt(data.maxListingBaseAmount)).toFixed(12)}
+            MCap: ${parseFloat(parseInt(data.virtualQuoteReserve) * 10000000 * priceInDollar['1868'] / parseInt(data.maxListingBaseAmount)).toFixed(12)}
           </span>
         </p>
       </div>
