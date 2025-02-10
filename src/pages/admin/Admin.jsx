@@ -29,7 +29,6 @@ const Admin = () => {
         defaultListingRate: '',
         listingFee: ''
     });
-    console.log(poolConfig)
     const [updatedPoolConfig, setUpdatedPoolConfig] = useState({
         index: '',
         initialVirtualBaseReserve: '',
@@ -89,7 +88,7 @@ const Admin = () => {
                 alert("Transaction failed!");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
     const handleSetNewAdmin = async () => {
@@ -122,7 +121,7 @@ const Admin = () => {
                 alert("Transaction failed!");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -160,7 +159,7 @@ const Admin = () => {
             }
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -207,7 +206,6 @@ const Admin = () => {
             const receipt = await waitForTransactionReceipt(config, {
                 hash: tx,
             });
-            console.log(receipt.status);
 
             if (receipt && receipt.status === 'success') {
                 window.location.reload();
@@ -237,8 +235,6 @@ const Admin = () => {
                 hash: tx,
             });
 
-            console.log(receipt.status);
-
             if (receipt && receipt.status === 'success') {
                 window.location.reload();
             } else {
@@ -266,19 +262,18 @@ const Admin = () => {
                     functionName: 'getRouters',
                     chainId: 1868,
                 });
-                console.log({ totalrouters })
-                // Ensure `totalrouters` is an array before updating state
+
                 if (Array.isArray(totalrouters)) {
                     setrouters(totalrouters);
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
 
         const fetchPoolCount = async () => {
             try {
-                // console.log("Fetching pool count...");
+
                 const result = await readContract(config, {
                     address: daimond[1868],
                     abi: MangerAbi,
@@ -287,12 +282,12 @@ const Admin = () => {
                 });
                 setTotalTokens(result.toString());
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         };
         const fetchConfig = async () => {
             try {
-                // console.log("Fetching pool count...");
+
                 const result = await readContract(config, {
                     address: daimond[1868],
                     abi: MangerAbi,
@@ -301,12 +296,11 @@ const Admin = () => {
                 });
                 setMasterConfig(result);
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         };
         const fetchPoolConfig = async () => {
             try {
-                // console.log("Fetching pool count...");
                 const result = await readContract(config, {
                     address: daimond[1868],
                     abi: MangerAbi,
@@ -316,7 +310,7 @@ const Admin = () => {
                 });
                 setPoolConfig(result);
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         };
 
@@ -338,7 +332,7 @@ const Admin = () => {
             });
             setTokenAddress(data)
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
         setIsModalOpen(true);
     };
@@ -605,7 +599,7 @@ const Admin = () => {
                                 <p className="text-sm text-gray-600 mb-4">Enter the new admin address.</p>
                                 <input
                                     type="text"
-                                    placeholder="Enter Router Address"
+                                    placeholder="Enter Admin Address"
                                     className="w-full p-2 mb-4 border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500"
                                     value={newAdmin}
                                     onChange={(e) => setNewAdmin(e.target.value)}

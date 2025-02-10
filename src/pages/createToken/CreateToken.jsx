@@ -62,14 +62,13 @@ const CreateToken = () => {
         configIndex: 20,
         router: routerAddresses[router],
         startTime: showExtraOptions ? BigInt(Math.floor(new Date(startTime).getTime() / 1000)) : BigInt(Math.floor(new Date().getTime() / 1000)),
-        buyFeeRate: showExtraOptions ? buyAmount : 0,
-        sellFeeRate: showExtraOptions ? sellAmount : 0,
+        buyFeeRate: showExtraOptions ? buyAmount * 100 : 0,
+        sellFeeRate: showExtraOptions ? sellAmount * 100 : 0,
         maxBuyAmount: 0,
         delayBuyTime: 0,
         merkleRoot: "0x0000000000000000000000000000000000000000000000000000000000000000",
         initialBuyAmount: 0 // Using total supply here
       };
-      console.log({ params })
 
       const data = await writeContractAsync({
         abi: degenFacetAbi,

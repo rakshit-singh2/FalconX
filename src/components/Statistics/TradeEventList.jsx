@@ -1,5 +1,4 @@
 import { useAccount, usePublicClient } from 'wagmi';
-import { parseAbiItem } from 'viem';
 import { getBlockNumber } from '@wagmi/core'
 
 // ABI fragment for the Trade event
@@ -31,6 +30,8 @@ export function useTradeEvents(contractAddress) {
       event: tradeEventAbi, // Use the correct ABI here
       fromBlock: blockNumber - 50000n, // Starting block
       toBlock: blockNumber, // Fetch logs up to the latest block
+      // fromBlock: blockNumber - 200000n, // Starting block
+      // toBlock: blockNumber - 150000n, // Fetch logs up to the latest block
     });
 
     return logs.map((log) => ({
@@ -58,9 +59,7 @@ function TradeEventList({ contractAddress }) {
   const { chain, address } = useAccount();
   const { fetchEvents } = useTradeEvents();
   const [tradeEvents, setTradeEvents] = useState([]);
-  console.log(tradeEvents)
   const [allYour, setAllYour] = useState(false)
-
   const blockExplorerUrl = chain?.blockExplorers?.default?.url;
   useEffect(() => {
     const getEvents = async () => {
@@ -76,12 +75,12 @@ function TradeEventList({ contractAddress }) {
       <div className="btngroup flex mb-6">
         <button
           className={`buy px-6 py-3 text-white text-md font-semibold rounded-lg transition duration-300 w-full ${!allYour ? '' : 'bg-gold'}`}
-          onClick={() => setAllYour(true)}>
+          onClick={() => setAllYour(false)}>
           <h2>All Transactions</h2>
         </button>
         <button
           className={`sell px-6 py-3 text-white text-md font-semibold rounded-lg  transition duration-300 w-full ${allYour ? '' : 'bg-gold'}`}
-          onClick={() => setAllYour(false)}>
+          onClick={() => setAllYour(true)}>
           <h2>Your Transactions</h2>
         </button>
       </div>
@@ -95,7 +94,6 @@ function TradeEventList({ contractAddress }) {
               <th className="py-3 px-6 text-gray-700 font-semibold">Type</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Sonieum</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Token</th>
-              <th className="py-3 px-6 text-gray-700 font-semibold">Type</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Age (Days)</th>
               <th className="py-3 px-6 text-gray-700 font-semibold">Transaction Hash</th>
             </tr>
@@ -107,10 +105,10 @@ function TradeEventList({ contractAddress }) {
                   <td className="py-3 px-6 text-gray-800">{event.user}</td>
                   <td className="py-3 px-6">{event.isBuy ? 'Buy' : 'Sell'}</td>
                   <td className="py-3 px-6">
-                    {event.isBuy ? (BigInt(event.amountIn) / BigInt(10 ** 18)).toString() : (parseFloat(event.amountOut) / 10 ** 18).toFixed(18)}
+                    {event.isBuy ? (parseFloat(event.amountIn) / 10 ** 18).toFixed(18) : (parseFloat(event.amountOut) / 10 ** 18).toFixed(18)}
                   </td>
                   <td className="py-3 px-6">
-                    {event.isBuy ? (parseFloat(event.amountOut) / 10 ** 18).toFixed(18) : (BigInt(event.amountIn) / BigInt(10 ** 18)).toString()}
+                    {event.isBuy ? (parseFloat(event.amountOut) / 10 ** 18).toFixed(18) : (parseFloat(event.amountIn) / 10 ** 18).toFixed(18)}
                   </td>
                   <td className="py-3 px-6">
                     {Math.floor((new Date() - event.timestamp) / (1000 * 60 * 60 * 24))}
@@ -126,11 +124,17 @@ function TradeEventList({ contractAddress }) {
                 </tr>
               ))
               : tradeEvents
-                .filter((event) => event.user === address) // Filter events by the user's address
+                .filter((event) => event.user === address)
                 .map((event, index) => (
                   <tr key={index} className="border-t hover:bg-gray-50">
                     <td className="py-3 px-6 text-gray-800">{event.user}</td>
                     <td className="py-3 px-6">{event.isBuy ? 'Buy' : 'Sell'}</td>
+                    <td className="py-3 px-6">
+                      {event.isBuy ? (parseFloat(event.amountIn) / 10 ** 18).toFixed(18) : (parseFloat(event.amountOut) / 10 ** 18).toFixed(18)}
+                    </td>
+                    <td className="py-3 px-6">
+                      {event.isBuy ? (parseFloat(event.amountOut) / 10 ** 18).toFixed(18) : (parseFloat(event.amountIn) / 10 ** 18).toFixed(18)}
+                    </td>
                     <td className="py-3 px-6">
                       {Math.floor((new Date() - event.timestamp) / (1000 * 60 * 60 * 24))}
                     </td>

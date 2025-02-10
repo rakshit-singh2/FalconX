@@ -180,19 +180,19 @@ const BuySell = ({ data, token, tokenBalance, reserve }) => {
 
                     <div className="text-black">
                         {isBuy ? (
-                            <p>Buy Tax: <span className='receivedvalu'>{parseInt(data?.buyFeeRate)}%</span></p>
+                            <p>Buy Tax: <span className='receivedvalu'>{parseInt(data?.buyFeeRate) / 100}%</span></p>
                         ) : (
-                            <p>Sell Tax: <span className='receivedvalu'>{parseInt(data?.sellFeeRate)}%</span></p>
+                            <p>Sell Tax: <span className='receivedvalu'>{parseInt(data?.sellFeeRate) / 100}%</span></p>
                         )}
-                        <p> Max Received : <span className='receivedvalu'>{parseFloat(formatUnits(amountOut[0] < amountOut[1] ? amountOut[0] : amountOut[1],18)).toFixed(12) }</span></p>
+                        <p> Max Received : <span className='receivedvalu'>{parseFloat(formatUnits(amountOut[0] < amountOut[1] ? amountOut[0] : amountOut[1], 18)).toFixed(12)}</span></p>
                         <p> Min Received : <span className='receivedvalu'>
                             {isBuy ?
-                                parseFloat(formatUnits(amountOut[1],18) * (1 - parseInt(data?.buyFeeRate) / 100)).toFixed(12) :
-                                parseFloat(formatUnits(amountOut[1],18) * (1 - parseInt(data?.sellFeeRate) / 100)).toFixed(12) 
+                                parseFloat(formatUnits(amountOut[1], 18) * (1 - parseInt(data?.buyFeeRate) / 100)).toFixed(12) :
+                                parseFloat(formatUnits(amountOut[1], 18) * (1 - parseInt(data?.sellFeeRate) / 100)).toFixed(12)
                             }
                         </span></p>
                         {isBuy ? <p>Your Balance: <span className='receivedvalu'>{balance ?? 0} {chain ? chain.nativeCurrency.symbol : 'currency'}</span></p> :
-                            <p>Your Holdings: <span className='receivedvalu'>{parseFloat(formatUnits(tokenBalance,18)).toFixed(12)} {poolDetailsParsed.symbol}</span></p>}
+                            <p>Your Holdings: <span className='receivedvalu'>{parseFloat(formatUnits(tokenBalance, 18)).toFixed(12)} {poolDetailsParsed.symbol}</span></p>}
                     </div>
                     <div className="flex justify-between space-x-4">
                         {isBuy ? (
